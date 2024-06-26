@@ -1,6 +1,5 @@
 // Import Modules
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema, default: mongoose } = require("mongoose");
 
 // Create Schema
 const categorySchema = new Schema({
