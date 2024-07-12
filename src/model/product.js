@@ -7,7 +7,7 @@ const productSchema = new Schema({
     required: true,
   },
   categoryId: {
-    type: mongoose.Types.ObjectId,
+    type: String,
     required: true,
     ref: "category",
   },
@@ -23,6 +23,10 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
+  rating: {
+    type: Number,
+    required: true,
+  },
   best_seller: {
     type: Boolean,
     required: true,
@@ -35,7 +39,7 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
-  desc_detail: {
+  desc: {
     short: {
       type: String,
       required: true,
@@ -45,6 +49,10 @@ const productSchema = new Schema({
       required: true,
     },
   },
+  manufacacturing_date: {
+    type: String,
+    required: true,
+  },
   expiry_date: {
     fozen: {
       type: String,
@@ -52,6 +60,16 @@ const productSchema = new Schema({
     },
     outside: {
       type: String,
+      required: true,
+    },
+  },
+  image_detail: {
+    banner: {
+      type: String,
+      required: true,
+    },
+    images: {
+      type: Array,
       required: true,
     },
   },
