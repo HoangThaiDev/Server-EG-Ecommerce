@@ -7,9 +7,24 @@ const functProducts = require("../function/products/product");
 // Create Controllers Action
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("categoryId", "title -_id");
+    const products = await Product.find()
+      .populate("categoryId", "title -_id")
+      .lean();
 
-    res.status(200).json(products);
+    // Calculate price discount when product have sale off
+    const updateProducts = products.map((product) => {
+      const priceNumber = parseFloat(product.price);
+      if (product.percent_discount > 0) {
+        product.price_discount = (
+          priceNumber -
+          (priceNumber * product.percent_discount) / 100
+        ).toFixed(2);
+        return product;
+      }
+      return product;
+    });
+
+    res.status(200).json(updateProducts);
   } catch (error) {
     console.log(">>> Error of action (get Products):", error);
   }
@@ -17,6 +32,7 @@ exports.getProducts = async (req, res) => {
 
 exports.postGetProductDetail = async (req, res) => {
   const { productId } = req.params;
+
   try {
     const productById = await Product.findById(productId).populate(
       "categoryId",

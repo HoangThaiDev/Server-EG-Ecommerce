@@ -12,7 +12,7 @@ const productSchema = new Schema({
     ref: "category",
   },
   price: {
-    type: Number,
+    type: String,
     required: true,
   },
   unit: {
