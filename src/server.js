@@ -9,6 +9,7 @@ const env = require("./config/enviroment");
 // Import Routers
 const categoryRouter = require("./router/category");
 const productRouter = require("./router/product");
+const userRouter = require("./router/user");
 
 // Create + use Middlewares
 app.use(cors(corsOptions));
@@ -37,3 +38,4 @@ mongooseConnect(connectServerWithDbs);
 /// Use Route Endpoint
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
+app.use("/user", userRouter);

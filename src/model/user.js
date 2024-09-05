@@ -2,7 +2,11 @@
 const { Schema, default: mongoose } = require("mongoose");
 
 const userSchema = new Schema({
-  username: {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
     type: String,
     required: true,
   },
@@ -17,10 +21,10 @@ const userSchema = new Schema({
   avatar: {
     type: String,
     required: true,
+    default:
+      "https://res.cloudinary.com/dqrughrs2/image/upload/v1725449436/anh-avatar-trang-tron_zjz4ke.jpg",
   },
   info_detail: {
-    firstName: String,
-    lastName: String,
     age: Number,
     address: String,
     city: String,
