@@ -2,7 +2,7 @@
 const Product = require("../model/product");
 
 // Import Functions
-const functProducts = require("../function/products/product");
+const functProducts = require("../helper/products/product");
 
 // Create Controllers Action
 exports.getProducts = async (req, res) => {
@@ -67,4 +67,8 @@ exports.postSearchProductByOptions = async (req, res) => {
         .json({ message: "No found products with your value search!" });
       break;
   }
+};
+
+exports.postBuyProduct = async (req, res) => {
+  console.log(req.body);
 };

@@ -11,4 +11,6 @@ router.post("/detail/:productId", productController.postGetProductDetail);
 
 router.get("/search", productController.postSearchProductByOptions);
 
+router.post("/buy", productController.postBuyProduct);
+
 module.exports = router;

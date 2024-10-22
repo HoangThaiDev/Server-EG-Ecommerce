@@ -36,7 +36,6 @@ exports.checkFormRegister = (valuesForm) => {
     },
     { abortEarly: false } // Tiếp tục kiểm tra lỗi chứ ko có dừng sau khi tìm thấy
   );
-  console.log(error);
 
   if (error) {
     // Return an array of all error messages

@@ -16,6 +16,34 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
 
+// Create middleware to add Headers CORS
+app.use((req, res, next) => {
+  // Kiểm tra nếu origin nằm trong WHITELIST_DOMAINS_PRODUCTION
+  if (
+    env.BUILD_MODE === "production" &&
+    WHITELIST_DOMAINS_PRODUCTION.includes(origin)
+  ) {
+    res.header("Access-Control-Allow-Origin", origin);
+  } else if (
+    env.BUILD_MODE === "dev" &&
+    WHITELIST_DOMAINS_DEV.includes(origin)
+  ) {
+    res.header("Access-Control-Allow-Origin", origin);
+  } else {
+    // Nếu không phải origin hợp lệ thì không thiết lập header
+    res.header("Access-Control-Allow-Origin", "null");
+  }
+
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Origin", origin);
+  next();
+});
+
 // Create Server DBS + Connect Server
 const connectServerWithDbs = () => {
   if (env.BUILD_MODE === "production") {

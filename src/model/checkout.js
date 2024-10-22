@@ -2,11 +2,30 @@
 const { Schema, default: mongoose } = require("mongoose");
 
 const checkoutSchema = new Schema({
-  cartId: {
-    type: mongoose.Types.ObjectId,
-    required: true,
-    ref: "cart",
+  selectedItems: {
+    item: [
+      {
+        itemId: {
+          type: mongoose.Types.ObjectId,
+          required: true,
+          ref: "product",
+        },
+        quantity_item: {
+          type: Number,
+          required: true,
+        },
+        priceItem: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
   },
+
   info_client: {
     firstName: {
       type: String,

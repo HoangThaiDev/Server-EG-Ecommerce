@@ -1,7 +1,7 @@
 // Import Modules
 const { Schema, default: mongoose } = require("mongoose");
 
-const transactionSchema = new Schema({
+const orderSchema = new Schema({
   checkoutId: {
     type: mongoose.Types.ObjectId,
     required: true,
@@ -15,6 +15,7 @@ const transactionSchema = new Schema({
   status: {
     type: String,
     required: true,
+    default: "Pending",
   },
   createAt: {
     type: Date,
@@ -25,4 +26,4 @@ const transactionSchema = new Schema({
     default: Date.now,
   },
 });
-module.exports = mongoose.model("transaction", transactionSchema);
+module.exports = mongoose.model("order", orderSchema);

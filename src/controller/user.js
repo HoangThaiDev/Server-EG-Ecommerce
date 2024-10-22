@@ -2,7 +2,7 @@
 const User = require("../model/user");
 
 // Import Func Helper
-const checkValidateForm = require("../function/user/checkValidateForm");
+const checkValidateForm = require("../helper/user/checkValidateForm");
 
 // Create Controllers Action
 exports.postRegisterUser = (req, res) => {
