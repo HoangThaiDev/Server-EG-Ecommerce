@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", env.URL_CLIENT_LOCAL);
   }
   if (env.BUILD_MODE === "production") {
-    res.header("Access-Control-Allow-Origin", env.URL_CLIENT_PRODUCTION);
+    res.header("Access-Control-Allow-Origin", env.URL_CLIENT_LOCAL);
   }
 
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
