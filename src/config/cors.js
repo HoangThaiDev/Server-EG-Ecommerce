@@ -7,6 +7,8 @@ const env = require("./enviroment");
 
 exports.corsOptions = {
   origin: function (origin, callback) {
+    console.log("origin", origin);
+
     // Cho phép tất cả trong môi trường dev
     if (env.BUILD_MODE === "dev" && WHITELIST_DOMAINS_DEV.includes(origin)) {
       return callback(null, true);
