@@ -16,6 +16,17 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
 
+app.use(function (req, res, next) {
+  //Enabling CORS
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+  );
+  next();
+});
+
 // Create Server DBS + Connect Server
 const connectServerWithDbs = () => {
   if (env.BUILD_MODE === "production") {
