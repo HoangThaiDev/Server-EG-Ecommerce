@@ -16,7 +16,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
+  console.log(env);
   if (env.BUILD_MODE === "dev") {
     res.header("Access-Control-Allow-Origin", env.URL_CLIENT_LOCAL);
   }
