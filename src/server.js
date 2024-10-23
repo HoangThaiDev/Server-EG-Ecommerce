@@ -17,8 +17,13 @@ app.use(express.json());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
 
 app.use(function (req, res, next) {
-  //Enabling CORS
-  res.header("Access-Control-Allow-Origin", "*");
+  if (env.BUILD_MODE === "dev") {
+    res.header("Access-Control-Allow-Origin", env.URL_CLIENT_LOCAL);
+  }
+  if (env.BUILD_MODE === "production") {
+    res.header("Access-Control-Allow-Origin", env.URL_CLIENT_PRODUCTION);
+  }
+
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
     "Access-Control-Allow-Headers",
