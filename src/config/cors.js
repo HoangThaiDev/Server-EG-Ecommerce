@@ -11,6 +11,7 @@ exports.corsOptions = {
     if (env.BUILD_MODE === "dev" && WHITELIST_DOMAINS_DEV.includes(origin)) {
       return callback(null, true);
     }
+    console.log("origin", origin);
 
     // Kiểm tra nếu origin nằm trong WHITELIST_DOMAINS  => Chỉ dùng ở môi trường production
     if (
