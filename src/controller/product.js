@@ -30,7 +30,7 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-exports.postGetProductDetail = async (req, res) => {
+exports.getProductDetail = async (req, res) => {
   const { productId } = req.params;
 
   try {
@@ -69,6 +69,6 @@ exports.postSearchProductByOptions = async (req, res) => {
   }
 };
 
-exports.postBuyProduct = async (req, res) => {
+exports.postAddProductToCart = async (req, res) => {
   console.log(req.body);
 };
