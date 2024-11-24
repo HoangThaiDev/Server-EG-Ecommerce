@@ -2,7 +2,7 @@
 const Product = require("../../model/product");
 
 // Create Function
-exports.findProductByName = async (res, valueName) => {
+exports.findProductByName = async (valueName) => {
   const valueNameSearch = valueName
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -15,16 +15,12 @@ exports.findProductByName = async (res, valueName) => {
     const findProductsByName = products.filter((p) =>
       p.name.toLowerCase().includes(valueNameSearch)
     );
-    if (findProductsByName.length === 0) {
-      res
-        .status(400)
-        .json({ message: "No found products with your value search!" });
-      return false;
-    }
+    if (findProductsByName.length === 0) return [];
 
-    res.status(200).json(findProductsByName);
+    return findProductsByName;
   } catch (error) {
     console.log(">>> Error of action (search Products By Name):", error);
+    res.status(500).json({ message: "Interval Server Error!" });
   }
 };
 

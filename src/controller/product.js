@@ -2,7 +2,15 @@
 const Product = require("../model/product");
 
 // Import Functions
-const functProducts = require("../helper/products/product");
+const functProducts = require("../helper/products/findProducts");
+const { pagination } = require("../helper/products/pagination");
+const {
+  filterProductsByCategory,
+  filterProductsBySort,
+  filterProductsByRate,
+  filterProductsByPrice,
+  filterProductsByTags,
+} = require("../helper/products/filterProduct");
 
 // Create Controllers Action
 exports.getProducts = async (req, res) => {
@@ -50,22 +58,68 @@ exports.getProductDetail = async (req, res) => {
   }
 };
 
-exports.postSearchProductByOptions = async (req, res) => {
-  const valueSearchObj = req.query;
-  const optionSearch = Object.keys(valueSearchObj)[0];
+exports.getProductsByQueries = async (req, res) => {
+  // Get value queries from req.query
+  const {
+    name: nameValue,
+    page: pageValue = 1,
+    category: valueCategory,
+    sort: valueSort,
+    star: valueRate,
+    price_min,
+    price_max,
+    tags,
+  } = req.query;
 
-  switch (optionSearch) {
-    case "name":
-      functProducts.findProductByName(res, valueSearchObj.name);
-      break;
-    case "category":
-      functProducts.findProductByCategory(res, valueSearchObj.category);
-      break;
-    default:
-      res
-        .status(400)
-        .json({ message: "No found products with your value search!" });
-      break;
+  // Create + use vars
+  const pageSize = 12;
+  let productsUpdate;
+
+  try {
+    // Check client has searched or not
+    if (nameValue && nameValue.length > 0) {
+      const searchProductsByName = await functProducts.findProductByName(
+        nameValue
+      );
+
+      if (searchProductsByName.length === 0)
+        return res.status(400).json({
+          message: 'No found product with your "value name" search!',
+        });
+
+      productsUpdate = searchProductsByName;
+    } else {
+      const products = await Product.find().populate("categoryId", "-_id");
+      productsUpdate = products;
+    }
+
+    // Start to filter by query (if have)
+    // --------------- Query: Sort --------------------
+    productsUpdate = filterProductsBySort(productsUpdate, valueSort);
+
+    // --------------- Query: Category ----------------
+    productsUpdate = filterProductsByCategory(productsUpdate, valueCategory);
+
+    // --------------- Query: Rate --------------------
+    productsUpdate = filterProductsByRate(productsUpdate, valueRate);
+
+    // --------------- Query: Price -------------------
+    productsUpdate = filterProductsByPrice(
+      productsUpdate,
+      +price_min,
+      +price_max
+    );
+
+    // --------------- Query: Tag ---------------------
+    productsUpdate = filterProductsByTags(productsUpdate, tags);
+
+    // Get products by page with Pagesize
+    const sliceProducts = pagination(productsUpdate, pageValue, pageSize);
+
+    res.status(200).json({ totalProducts: productsUpdate, sliceProducts });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Interval Server Error!" });
   }
 };
 

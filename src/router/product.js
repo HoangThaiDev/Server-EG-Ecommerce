@@ -9,7 +9,7 @@ router.get("", productController.getProducts);
 
 router.get("/detail/:productId", productController.getProductDetail);
 
-router.get("/search", productController.postSearchProductByOptions);
+router.get("/query", productController.getProductsByQueries);
 
 router.post("/add-to-cart", productController.postAddProductToCart);
 
