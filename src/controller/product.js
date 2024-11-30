@@ -34,7 +34,7 @@ exports.getProducts = async (req, res) => {
 
     res.status(200).json(updateProducts);
   } catch (error) {
-    console.log(">>> Error of action (get Products):", error);
+    res.status(500).json({ message: "Interval Server Error!" });
   }
 };
 
@@ -48,13 +48,12 @@ exports.getProductDetail = async (req, res) => {
     );
 
     if (!productById) {
-      res.status(400).json({ message: "This product is defective!" });
-      return false;
+      return res.status(400).json({ message: "This product is defective!" });
     }
 
     res.status(200).json(productById);
   } catch (error) {
-    console.log(">>> Error of action (getProduct Detail):", error);
+    res.status(500).json({ message: "Interval Server Error!" });
   }
 };
 
@@ -118,11 +117,6 @@ exports.getProductsByQueries = async (req, res) => {
 
     res.status(200).json({ totalProducts: productsUpdate, sliceProducts });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Interval Server Error!" });
   }
-};
-
-exports.postAddProductToCart = async (req, res) => {
-  console.log(req.body);
 };

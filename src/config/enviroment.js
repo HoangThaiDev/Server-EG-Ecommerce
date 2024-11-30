@@ -7,6 +7,8 @@ const env = {
   DATABASE_NAME: process.env.DATABASE_NAME,
   AUTHOR: process.env.AUTHOR,
   BUILD_MODE: process.env.BUILD_MODE,
+  ACCESSTOKEN: process.env.ACCESSTOKEN,
+  REFRESHTOKEN: process.env.REFRESHTOKEN,
 };
 
 module.exports = env;

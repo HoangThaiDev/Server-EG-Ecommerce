@@ -1,19 +1,22 @@
 // Import Modules
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const { corsOptions } = require("./config/cors");
 const mongooseConnect = require("./utils/database");
 const env = require("./config/enviroment");
+const cookieParser = require("cookie-parser");
+const app = express();
 
 // Import Routers
 const categoryRouter = require("./router/category");
 const productRouter = require("./router/product");
 const userRouter = require("./router/user");
+const cartRouter = require("./router/cart");
 
 // Create + use Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
 
 // Create Server DBS + Connect Server
@@ -39,3 +42,4 @@ mongooseConnect(connectServerWithDbs);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
 app.use("/user", userRouter);
+app.use("/cart", cartRouter);
