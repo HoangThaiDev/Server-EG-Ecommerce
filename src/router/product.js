@@ -1,10 +1,8 @@
 // Import Modules
-const express = require("express");
+const router = require("express").Router();
 
 // Import Controller
 const productController = require("../controller/product");
-
-const router = express.Router();
 
 router.get("", productController.getProducts);
 

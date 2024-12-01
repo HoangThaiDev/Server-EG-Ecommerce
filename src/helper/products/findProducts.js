@@ -19,7 +19,6 @@ exports.findProductByName = async (valueName) => {
 
     return findProductsByName;
   } catch (error) {
-    console.log(">>> Error of action (search Products By Name):", error);
     res.status(500).json({ message: "Interval Server Error!" });
   }
 };
@@ -40,6 +39,6 @@ exports.findProductByCategory = async (res, valueId) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.log(">>> Error of action (search Products By Category):", error);
+    res.status(500).json({ message: "Interval Server Error!" });
   }
 };

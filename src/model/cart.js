@@ -73,7 +73,9 @@ cartSchema.methods.addToCart = async function (product) {
     const newItem = {
       itemId: product._id,
       quantity_item: product.quantity,
-      totalPrice: (parseFloat(product.price) * product.quantity).toFixed(2),
+      totalPrice: (parseFloat(product.totalPrice) * product.quantity).toFixed(
+        2
+      ),
     };
     cloneCart.items.push(newItem);
   }
@@ -82,8 +84,10 @@ cartSchema.methods.addToCart = async function (product) {
     const cloneItem = cloneCart.items[findIndexItem];
     cloneItem.quantity_item += product.quantity;
 
+    // Check this product has percent_discount or not
+
     cloneItem.totalPrice = (
-      parseFloat(cloneItem.totalPrice) + parseFloat(product.price)
+      parseFloat(cloneItem.totalPrice) + parseFloat(product.totalPrice)
     ).toFixed(2);
   }
 
@@ -97,23 +101,6 @@ cartSchema.methods.addToCart = async function (product) {
   this.cart_detail = cloneCart;
 
   return await this.save();
-};
-
-cartSchema.methods.updateCart = async function (cart) {
-  // Calculate price discount when product have sale off
-  const updateItems = cart.items.map((item) => {
-    const priceNumber = parseFloat(item.price);
-    if (item.percent_discount > 0) {
-      item.price_discount = (
-        priceNumber -
-        (priceNumber * item.percent_discount) / 100
-      ).toFixed(2);
-      return item;
-    }
-    return item;
-  });
-  cart.items = updateItems;
-  return cart;
 };
 
 module.exports = mongoose.model("cart", cartSchema);

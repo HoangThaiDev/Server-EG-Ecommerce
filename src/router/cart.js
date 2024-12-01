@@ -9,4 +9,10 @@ const cartController = require("../controller/cart");
 
 router.post("/add-to-cart", isAuthentication, cartController.postAddToCart);
 
+router.delete(
+  "/product/:productId",
+  isAuthentication,
+  cartController.deleteProductFromCart
+);
+
 module.exports = router;

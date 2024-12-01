@@ -1,6 +1,5 @@
 // Import Modules
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 
 // Import Controller
 const categoryController = require("../controller/category");

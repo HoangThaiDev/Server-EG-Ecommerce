@@ -1,13 +1,11 @@
 // Import Modules
-const express = require("express");
+const router = require("express").Router();
 
 // Import Middlewares
 const isAuth = require("../middleware/is-auth");
 
 // Import Controller
 const userController = require("../controller/user");
-
-const router = express.Router();
 
 router.get("/", userController.getUser);
 

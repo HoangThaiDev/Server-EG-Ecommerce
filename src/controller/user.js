@@ -6,9 +6,10 @@ const Cart = require("../model/cart");
 const env = require("../config/enviroment");
 const bcrypt = require("bcrypt");
 
-// Import Func Helper
+// Import Func Helpers
 const checkValidateForm = require("../helper/user/checkValidateForm");
 const jwt = require("../helper/user/jwt");
+const { getCart } = require("../helper/cart/getCart");
 
 // Create Controllers Action
 exports.postRegisterUser = async (req, res) => {
@@ -93,6 +94,11 @@ exports.postLoginUser = async (req, res) => {
         .json({ message: "Email or password is wrong. Please try again!" });
     }
 
+    // Check account client is input was used
+    if (findUser.state.refresh_token !== "") {
+      return res.status(401).json({ message: "Your account was using!" });
+    }
+
     // Create accessToken + refreshToken
     const newAccessToken = await jwt.generateAccessToken(
       findUser._id,
@@ -108,11 +114,14 @@ exports.postLoginUser = async (req, res) => {
     }
 
     // Check client has cart or not
+
     const findCartByUserId = await Cart.findOne({
       userId: findUser._id,
-    })
-      .select({ createdAt: 0, updatedAt: 0, userId: 0 })
-      .lean();
+    }).populate("cart_detail.items.itemId");
+
+    const modifiedCart = await findCartByUserId.updateCart(
+      findCartByUserId.cart_detail
+    );
 
     if (!findCartByUserId) {
       const newCart = new Cart({
@@ -152,10 +161,8 @@ exports.postLoginUser = async (req, res) => {
       info_detail: findUser.info_detail,
       isLoggedIn: true,
       cart: {
-        items: findCartByUserId ? findCartByUserId.cart_detail.items : [],
-        totalPriceCart: findCartByUserId
-          ? findCartByUserId.cart_detail.totalPriceCart
-          : "0",
+        items: findCartByUserId ? modifiedCart.items : [],
+        totalPriceCart: findCartByUserId ? modifiedCart.totalPriceCart : "0",
       },
     });
   } catch (error) {
@@ -197,10 +204,7 @@ exports.getUser = async (req, res) => {
     }
 
     // Get cart from database
-    const cartCurrent = await Cart.findOne({ userId: findUser._id }).populate(
-      "cart_detail.items.itemId"
-    );
-    const modifiedCart = await cartCurrent.updateCart(cartCurrent.cart_detail);
+    const newCart = await getCart(findUser._id);
 
     // Create accessToken
     const newAccessToken = await jwt.generateAccessToken(
@@ -216,9 +220,11 @@ exports.getUser = async (req, res) => {
       accessToken: newAccessToken,
       info_detail: findUser.info_detail,
       isLoggedIn: true,
-      cart: modifiedCart,
+      cart: newCart,
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: "Interval Server Error!" });
   }
 };
