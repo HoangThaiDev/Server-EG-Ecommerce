@@ -15,4 +15,10 @@ router.delete(
   cartController.deleteProductFromCart
 );
 
+router.post(
+  "/products",
+  isAuthentication,
+  cartController.deleteProductsFromCart
+);
+
 module.exports = router;

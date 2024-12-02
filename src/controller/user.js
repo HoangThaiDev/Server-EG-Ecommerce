@@ -94,10 +94,10 @@ exports.postLoginUser = async (req, res) => {
         .json({ message: "Email or password is wrong. Please try again!" });
     }
 
-    // Check account client is input was used
-    if (findUser.state.refresh_token !== "") {
-      return res.status(401).json({ message: "Your account was using!" });
-    }
+    // // Check account client is input was used
+    // if (findUser.state.refresh_token !== "") {
+    //   return res.status(401).json({ message: "Your account was using!" });
+    // }
 
     // Create accessToken + refreshToken
     const newAccessToken = await jwt.generateAccessToken(
@@ -119,9 +119,7 @@ exports.postLoginUser = async (req, res) => {
       userId: findUser._id,
     }).populate("cart_detail.items.itemId");
 
-    const modifiedCart = await findCartByUserId.updateCart(
-      findCartByUserId.cart_detail
-    );
+    const modifiedCart = await getCart(findUser._id);
 
     if (!findCartByUserId) {
       const newCart = new Cart({
@@ -195,6 +193,8 @@ exports.getUser = async (req, res) => {
     );
 
     if (decodedRefreshToken === "RefreshToken Expired") {
+      findUser.state.refresh_token = "";
+      await findUser.save();
       res.clearCookie("refreshToken_client", {
         secure: env.BUILD_MODE === "dev" ? false : true,
         httpOnly: true,
@@ -223,8 +223,6 @@ exports.getUser = async (req, res) => {
       cart: newCart,
     });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({ message: "Interval Server Error!" });
   }
 };

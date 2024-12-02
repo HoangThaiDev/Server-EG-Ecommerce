@@ -75,7 +75,48 @@ exports.deleteProductFromCart = async (req, res) => {
 
     res.status(200).json({ cart: newCart });
   } catch (error) {
+    res.status(500).json({ message: "Interval Server Error!" });
+  }
+};
+
+exports.deleteProductsFromCart = async (req, res) => {
+  const selectedItemIds = req.body;
+
+  try {
+    const findCart = await Cart.findOne({ userId: req.user });
+    const { cart_detail } = findCart;
+
+    const filteredCartItems = cart_detail.items.filter((item) => {
+      const isExist = selectedItemIds.some(
+        (selecteditem) => selecteditem.itemId === item.itemId.toString()
+      );
+
+      if (!isExist) {
+        return item;
+      }
+    });
+
+    // Calculate total price of cart
+    const newTotalPriceCart = filteredCartItems.reduce(
+      (acc, cur) => (parseFloat(acc) + parseFloat(cur.totalPrice)).toFixed(2),
+      0
+    );
+
+    // Update value cart of client
+    findCart.cart_detail.items = filteredCartItems;
+    findCart.cart_detail.totalPriceCart = newTotalPriceCart;
+
+    const result = await findCart.save();
+
+    if (!result) {
+      return res.status(400).json({ message: "Delete items failled!" });
+    }
+
+    const cart = await getCart(req.user);
+    res.status(200).json({ cart });
+  } catch (error) {
     console.log(error);
+
     res.status(500).json({ message: "Interval Server Error!" });
   }
 };

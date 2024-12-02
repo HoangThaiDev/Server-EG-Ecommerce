@@ -31,8 +31,10 @@ exports.isAuthentication = async (req, res, next) => {
       const findUser = await User.findOne({
         "state.refresh_token": refreshToken,
       });
+
       findUser.state.refresh_token = "";
       await findUser.save();
+
       res.clearCookie("refreshToken_client", {
         httpOnly: true,
         sameSite: "lax",
