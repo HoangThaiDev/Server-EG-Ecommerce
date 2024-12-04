@@ -3,24 +3,16 @@ const { Schema, default: mongoose } = require("mongoose");
 
 const checkoutSchema = new Schema(
   {
+    userId: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
+
     cart: {
-      items: [
-        {
-          itemId: {
-            type: mongoose.Types.ObjectId,
-            required: true,
-            ref: "product",
-          },
-          quantity_item: {
-            type: Number,
-            required: true,
-          },
-          priceItem: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
+      items: {
+        type: Array,
+        required: true,
+      },
       totalPriceCart: {
         type: String,
         required: true,
@@ -30,32 +22,45 @@ const checkoutSchema = new Schema(
     info_client: {
       firstName: {
         type: String,
-        required: true,
+        default: "",
       },
       lastName: {
         type: String,
-        required: true,
+        default: "",
       },
       email: {
         type: String,
-        required: true,
+        default: "",
       },
       address: {
         type: String,
-        required: true,
+        default: "",
       },
       city: {
         type: String,
-        required: true,
+        default: "",
+      },
+      district: {
+        type: String,
+        default: "",
+      },
+      commune: {
+        type: String,
+        default: "",
       },
       phoneNumber: {
         type: String,
-        required: true,
+        default: "",
       },
       note: {
         type: String,
-        required: true,
+        default: "Empty Note!",
       },
+    },
+
+    method_payment: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

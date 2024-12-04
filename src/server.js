@@ -12,6 +12,7 @@ const categoryRouter = require("./router/category");
 const productRouter = require("./router/product");
 const userRouter = require("./router/user");
 const cartRouter = require("./router/cart");
+const checkoutRouter = require("./router/checkout");
 
 // Create + use Middlewares
 app.use(cors(corsOptions));
@@ -43,3 +44,4 @@ app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
 app.use("/user", userRouter);
 app.use("/cart", cartRouter);
+app.use("/checkout", checkoutRouter);

@@ -36,27 +36,7 @@ const cartSchema = new Schema(
 );
 
 // Create + use method
-cartSchema.methods.chechItemExistCart = function (product) {
-  const { cart_detail } = this;
-
-  // Check cart have items or not
-  if (cart_detail.items.length === 0) {
-    return true;
-  }
-
-  // Find index item in cart
-  const findIndexItem = cart_detail.items.findIndex(
-    (item) => item.itemId.toString() === product._id
-  );
-
-  if (findIndexItem !== -1) {
-    const item = cart_detail.items[findIndexItem];
-    const isQuantityAtLimit = item.quantity_item <= 20;
-    return isQuantityAtLimit;
-  }
-
-  return true;
-};
+cartSchema.methods.updateCart = async function (params) {};
 
 cartSchema.methods.addToCart = async function (product) {
   const cloneCart = {

@@ -16,15 +16,6 @@ exports.postAddToCart = async (req, res) => {
       return res.status(400).json({ message: "No found your cart!" });
     }
 
-    // Check quantity item was existed in cart > 20 or not
-    const result = cartOfClient.chechItemExistCart(product);
-
-    if (!result) {
-      return res
-        .status(400)
-        .json({ message: "Quantity item was overlimited in cart!" });
-    }
-
     const isSuccess = await cartOfClient.addToCart(product);
 
     if (!isSuccess) {
@@ -33,6 +24,7 @@ exports.postAddToCart = async (req, res) => {
 
     // Get cart from database
     const newCart = await getCart(userId);
+    // console.log(newCart);
 
     res.status(200).json({ cart: newCart });
   } catch (error) {

@@ -15,7 +15,6 @@ const orderSchema = new Schema(
     },
     status: {
       type: String,
-      required: true,
       default: "Pending",
     },
   },
