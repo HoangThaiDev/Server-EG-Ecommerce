@@ -15,6 +15,6 @@ router.post(
   checkoutController.postUpdateInfoClientOfCheckout
 );
 
-router.get("/", isAuthentication, checkoutController.getCheckout);
+router.get("/checkout", isAuthentication, checkoutController.getCheckout);
 
 module.exports = router;

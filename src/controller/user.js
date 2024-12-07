@@ -18,6 +18,7 @@ exports.postRegisterUser = async (req, res) => {
   try {
     // Check validate values form
     const isFormValid = checkValidateForm.checkFormRegister(valuesForm);
+
     if (!isFormValid) {
       return res.status(400).json({ message: "Info Input Invalid!" });
     }
@@ -30,6 +31,7 @@ exports.postRegisterUser = async (req, res) => {
         .status(400)
         .json({ message: "Email was used. Please choose another email!" });
     }
+    console.log("findedUser", findedUser);
 
     // Use bcrypt to hash password
     const hashedPassword = await bcrypt.hash(valuesForm.password, 12);

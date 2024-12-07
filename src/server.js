@@ -13,6 +13,7 @@ const productRouter = require("./router/product");
 const userRouter = require("./router/user");
 const cartRouter = require("./router/cart");
 const checkoutRouter = require("./router/checkout");
+const orderRouter = require("./router/order");
 
 // Create + use Middlewares
 app.use(cors(corsOptions));
@@ -42,6 +43,7 @@ mongooseConnect(connectServerWithDbs);
 /// Use Route Endpoint
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
-app.use("/user", userRouter);
-app.use("/cart", cartRouter);
-app.use("/checkout", checkoutRouter);
+app.use("/users", userRouter);
+app.use("/carts", cartRouter);
+app.use("/checkouts", checkoutRouter);
+app.use("/orders", orderRouter);

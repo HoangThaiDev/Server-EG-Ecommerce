@@ -7,7 +7,7 @@ const isAuth = require("../middleware/is-auth");
 // Import Controller
 const userController = require("../controller/user");
 
-router.get("/", userController.getUser);
+router.get("/user", userController.getUser);
 
 router.post("/register", userController.postRegisterUser);
 
