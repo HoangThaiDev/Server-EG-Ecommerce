@@ -96,11 +96,6 @@ exports.postLoginUser = async (req, res) => {
         .json({ message: "Email or password is wrong. Please try again!" });
     }
 
-    // // Check account client is input was used
-    // if (findUser.state.refresh_token !== "") {
-    //   return res.status(401).json({ message: "Your account was using!" });
-    // }
-
     // Create accessToken + refreshToken
     const newAccessToken = await jwt.generateAccessToken(
       findUser._id,
@@ -166,6 +161,8 @@ exports.postLoginUser = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: "Interval Server Error!" });
   }
 };
