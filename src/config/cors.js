@@ -13,12 +13,12 @@ exports.corsOptions = {
     }
 
     // Nếu môi trường là production, kiểm tra xem origin có trong whitelist không
-    // if (
-    //   env.BUILD_MODE === "production" &&
-    //   WHITELIST_DOMAINS_PRODUCTION.includes(origin)
-    // ) {
-    //   return callback(null, true);
-    // }
+    if (
+      env.BUILD_MODE === "production" &&
+      WHITELIST_DOMAINS_PRODUCTION.includes(origin)
+    ) {
+      return callback(null, true);
+    }
     // Trường hợp không hợp lệ (thường không xảy ra trong dev)
     callback(new Error("Not allowed by CORS"));
   },

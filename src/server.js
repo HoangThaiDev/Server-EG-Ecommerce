@@ -16,7 +16,7 @@ const checkoutRouter = require("./router/checkout");
 const orderRouter = require("./router/order");
 
 // Create + use Middlewares
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.set("trust proxy", 1); // Đảm bảo thông tin IP address chính xác
